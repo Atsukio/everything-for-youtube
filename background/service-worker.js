@@ -39,9 +39,9 @@ async function addVideo({ url, title }) {
   if (!id) return fail('Could not identify the video.');
 
   title = title?.trim() || (await oembedTitle(id));
-  console.log('[Clean Subs] adding', id, 'with title:', title || '(none)');
+  console.log('[Everything for YouTube] adding', id, 'with title:', title || '(none)');
   try {
-    const res = await fetchWithTimeout(`${API}/rooms/${streamkey}/playlists/current/playlist_items/sync_update`, {
+    const res = await fetchWithTimeout(`${API}/rooms/${encodeURIComponent(streamkey)}/playlists/current/playlist_items/sync_update`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -54,11 +54,11 @@ async function addVideo({ url, title }) {
       const hint = res.status === 401 || res.status === 403 ? 'Check API key and room membership.'
         : res.status === 404 ? 'Room not found (is this the streamkey?).' : '';
       const body = (await res.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 150);
-      console.warn('[Clean Subs] add failed:', res.status, body);
+      console.warn('[Everything for YouTube] add failed:', res.status, body);
       return fail(`W2G returned ${res.status}. ${hint} ${body}`.trim());
     }
   } catch (err) {
-    console.warn('[Clean Subs] add failed:', err.name);
+    console.warn('[Everything for YouTube] add failed:', err.name);
     return fail(`Network error reaching W2G (${err.name}). Is access to w2g.tv granted? Turn the W2G switch off and on again.`);
   }
   await chrome.storage.local.remove('lastError');
@@ -69,7 +69,7 @@ async function testConnection() {
   const { apiKey, streamkey } = await getSettings();
   if (!apiKey || !streamkey) return { ok: false, message: 'Save an API key and room first.' };
   try {
-    const res = await fetchWithTimeout(`https://w2g.tv/rooms/${streamkey}`);
+    const res = await fetchWithTimeout(`https://w2g.tv/rooms/${encodeURIComponent(streamkey)}`);
     if (!res.ok) return { ok: false, message: `Room page returned ${res.status}. Check the streamkey.` };
   } catch {
     return { ok: false, message: 'Could not reach w2g.tv.' };

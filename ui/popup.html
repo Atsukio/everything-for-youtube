@@ -128,8 +128,8 @@
       </label>
 
       <div class="field-wrap" id="w2g-grant" hidden>
-        <p class="support">Chrome has not granted all the w2g.tv access these options need.</p>
-        <button id="w2g-grant-button" class="tonal" type="button">Grant access</button>
+        <p class="support" id="w2g-grant-why">Chrome has not granted all the w2g.tv access these options need.</p>
+        <button id="w2g-grant-button" class="tonal" type="button" aria-describedby="w2g-grant-why">Grant access</button>
       </div>
       <p class="support hint" data-hide-when-any="w2gThumbs w2gWatchPage w2gRoomTab w2gNoAutoplayAlone">Turning any of these on asks Chrome for access to w2g.tv.</p>
 
@@ -137,7 +137,7 @@
       <div data-show-when-any="w2gThumbs w2gWatchPage" hidden>
         <div class="field-wrap">
           <label class="field" id="apiKey-field">
-            <input id="apiKey" type="password" autocomplete="off" spellcheck="false" placeholder=" ">
+            <input id="apiKey" type="password" aria-describedby="apiKey-help" autocomplete="off" spellcheck="false" placeholder=" ">
             <span class="label">W2G API key</span>
           </label>
           <p class="support" id="apiKey-help"></p>
